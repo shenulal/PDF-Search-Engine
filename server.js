@@ -1,3 +1,13 @@
+/**
+ * PDF Search Engine
+ *
+ * Copyright (c) 2025 Shenulal Bhaskaran
+ * Email: shenulal@gmail.com
+ *
+ * This application allows searching for text across multiple PDF files
+ * with support for both local folder scanning and file uploads.
+ */
+
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');

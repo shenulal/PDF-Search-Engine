@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<!--
+    PDF Search Engine
+
+    Copyright (c) 2025 Shenulal Bhaskaran
+    Email: shenulal@gmail.com
+
+    This application allows searching for text across multiple PDF files
+    with support for both local folder scanning and file uploads.
+-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -532,6 +541,37 @@
             margin-bottom: 20px;
             border: 1px solid #c3e6cb;
         }
+
+        .footer {
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .copyright {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -615,6 +655,19 @@
 
             <!-- Results -->
             <div id="resultsContainer" class="results-container"></div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p><strong>PDF Search Engine</strong></p>
+                <p>Search for text across multiple PDF files with ease</p>
+                <p>
+                    <a href="mailto:shenulal@gmail.com">Contact Developer</a>
+                </p>
+                <div class="copyright">
+                    &copy; 2025 Shenulal Bhaskaran. All rights reserved.<br>
+                    Email: <a href="mailto:shenulal@gmail.com">shenulal@gmail.com</a>
+                </div>
+            </div>
         </div>
     </div>
 

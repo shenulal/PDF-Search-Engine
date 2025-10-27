@@ -203,3 +203,14 @@ Sample PDFs are included in the `test-pdfs/` folder. Try searching for:
 ## License
 
 ISC
+
+## Copyright
+
+© 2025 **Shenulal Bhaskaran**
+Email: [shenulal@gmail.com](mailto:shenulal@gmail.com)
+
+This application is developed and maintained by Shenulal Bhaskaran. All rights reserved.
+
+### About the Developer
+
+Shenulal Bhaskaran is a software developer passionate about creating efficient and user-friendly applications for document processing and text search.
