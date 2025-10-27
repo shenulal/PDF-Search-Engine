@@ -101,43 +101,6 @@ Sample PDFs are included in the `test-pdfs/` folder. Try searching for:
 - "contract" - Finds 1 PDF
 - "report" - Finds 1 PDF
 
-## Deployment
-
-### Deploy to Render.com
-
-1. Push to GitHub:
-```bash
-git add .
-git commit -m "PDF Search Engine"
-git push origin main
-```
-
-2. Go to [render.com](https://render.com)
-3. Create new Web Service
-4. Select your repository
-5. Set Build command: `npm install`
-6. Set Start command: `npm start`
-7. Click "Create Web Service"
-
-Your app will be live at: `https://pdf-search-engine.onrender.com`
-
-## Technology Stack
-
-- **Backend**: Express.js
-- **PDF Processing**: pdf-text-extract
-- **Frontend**: HTML5, CSS3, JavaScript
-- **Hosting**: Render.com
-
-## Troubleshooting
-
-### "Cannot find module" error
-```bash
-npm install
-```
-
-### Port 3000 already in use
-Change the port in `server.js` or kill the process using port 3000
-
 ### Search returns no results
 - Verify the folder path is correct
 - Ensure PDFs are in the specified folder
@@ -146,4 +109,3 @@ Change the port in `server.js` or kill the process using port 3000
 ## License
 
 ISC
-
