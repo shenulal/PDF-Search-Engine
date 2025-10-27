@@ -712,11 +712,22 @@
             showProgress('Scanning folder for PDF files...');
 
             try {
+                // Start progress animation during search
+                const progressInterval = setInterval(() => {
+                    const currentBar = document.getElementById('progressBar');
+                    const currentWidth = parseFloat(currentBar.style.width) || 0;
+                    if (currentWidth < 95) {
+                        currentBar.style.width = (currentWidth + Math.random() * 20) + '%';
+                    }
+                }, 400);
+
                 const response = await fetch('/api/search', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ folderPath, searchText })
                 });
+
+                clearInterval(progressInterval);
 
                 const data = await response.json();
 
@@ -726,8 +737,14 @@
                     return;
                 }
 
-                hideProgress();
-                displayResults(data);
+                // Complete the progress bar
+                updateProgress('Search complete! Processing results...', 100);
+
+                // Small delay to show 100% completion
+                setTimeout(() => {
+                    hideProgress();
+                    displayResults(data);
+                }, 300);
             } catch (error) {
                 hideProgress();
                 showError('Error: ' + error.message);
@@ -771,8 +788,17 @@
 
                 currentSessionId = uploadData.sessionId;
 
-                // Update progress message
+                // Update progress message to searching phase
                 updateProgress('Searching files for: "' + searchText + '"...', 50);
+
+                // Start progress animation during search
+                const progressInterval = setInterval(() => {
+                    const currentBar = document.getElementById('progressBar');
+                    const currentWidth = parseFloat(currentBar.style.width) || 50;
+                    if (currentWidth < 95) {
+                        currentBar.style.width = (currentWidth + Math.random() * 15) + '%';
+                    }
+                }, 300);
 
                 // Search in uploaded files
                 const searchResponse = await fetch('/api/search-uploaded', {
@@ -780,6 +806,8 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ sessionId: currentSessionId, searchText })
                 });
+
+                clearInterval(progressInterval);
 
                 const searchData = await searchResponse.json();
 
@@ -789,8 +817,14 @@
                     return;
                 }
 
-                hideProgress();
-                displayResults(searchData);
+                // Complete the progress bar
+                updateProgress('Search complete! Processing results...', 100);
+
+                // Small delay to show 100% completion
+                setTimeout(() => {
+                    hideProgress();
+                    displayResults(searchData);
+                }, 300);
             } catch (error) {
                 hideProgress();
                 showError('Error: ' + error.message);
@@ -810,7 +844,7 @@
             `;
 
             if (data.results.length === 0) {
-                html += '<div class="no-results">😔 No PDFs found containing "${data.searchText}"</div>';
+                html += `<div class="no-results">😔 No PDFs found containing "${data.searchText}"</div>`;
             } else {
                 data.results.forEach((result) => {
                     html += `

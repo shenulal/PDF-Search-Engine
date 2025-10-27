@@ -160,7 +160,10 @@ app.post('/api/search-uploaded', async (req, res) => {
 
     try {
         const results = [];
-        for (const fileInfo of files) {
+        const totalFiles = files.length;
+
+        for (let index = 0; index < totalFiles; index++) {
+            const fileInfo = files[index];
             const found = await searchInPdf(fileInfo.storagePath, searchText);
             if (found) {
                 results.push({
@@ -175,7 +178,8 @@ app.post('/api/search-uploaded', async (req, res) => {
             searchText,
             totalPdfs: files.length,
             matchingPdfs: results.length,
-            results
+            results,
+            processingTime: Date.now()
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
