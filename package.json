@@ -10,12 +10,17 @@
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["pdf", "search", "text-extraction"],
+  "keywords": [
+    "pdf",
+    "search",
+    "text-extraction"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "multer": "^2.0.2",
     "pdf-lib": "^1.17.1",
     "pdf-text-extract": "^1.5.0",
     "pdfkit": "^0.17.2"

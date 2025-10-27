@@ -48,6 +48,48 @@
             padding: 40px;
         }
 
+        /* Mode Selector */
+        .mode-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 20px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .mode-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Mode Sections */
+        .mode-section {
+            display: none;
+        }
+
+        .mode-section.active {
+            display: block;
+        }
+
         .search-form {
             margin-bottom: 30px;
         }
@@ -64,7 +106,8 @@
             font-size: 1.1em;
         }
 
-        input[type="text"] {
+        input[type="text"],
+        input[type="file"] {
             width: 100%;
             padding: 15px;
             border: 2px solid #e0e0e0;
@@ -73,9 +116,210 @@
             transition: border-color 0.3s;
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus,
+        input[type="file"]:focus {
             outline: none;
             border-color: #667eea;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .file-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .uploaded-files-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .uploaded-files-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .clear-btn {
+            padding: 8px 15px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+
+        .clear-btn:hover {
+            background: #c82333;
+        }
+
+        .file-list-container {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .file-item-name {
+            flex: 1;
+            color: #333;
+            word-break: break-all;
+            margin-right: 10px;
+        }
+
+        .file-item-size {
+            color: #999;
+            font-size: 0.85em;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        .remove-file-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 0 5px;
+            transition: color 0.2s;
+        }
+
+        .icon-btn {
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Progress Bar Styles */
+        .progress-container {
+            display: none;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f0f7ff;
+            border: 1px solid #667eea;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .progress-container.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-message {
+            font-size: 1em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .progress-bar-wrapper {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .progress-bar.indeterminate {
+            animation: indeterminateProgress 1.5s infinite;
+        }
+
+        @keyframes indeterminateProgress {
+            0% {
+                width: 0%;
+            }
+            50% {
+                width: 70%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        .progress-stats {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .progress-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #667eea;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .remove-file-btn:hover {
+            color: #c82333;
         }
 
         .search-btn {
@@ -234,27 +478,22 @@
             font-size: 1.1em;
         }
 
-        .error {
+        .error-message {
             background: #f8d7da;
             color: #721c24;
-            padding: 15px 20px;
+            padding: 15px;
             border-radius: 8px;
-            border-left: 4px solid #dc3545;
-            margin-top: 20px;
-        }
-
-        .info-box {
-            background: #d1ecf1;
-            color: #0c5460;
-            padding: 15px 20px;
-            border-radius: 8px;
-            border-left: 4px solid #17a2b8;
             margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
         }
 
-        .info-box strong {
-            display: block;
-            margin-bottom: 5px;
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
         }
     </style>
 </head>
@@ -262,160 +501,390 @@
     <div class="container">
         <div class="header">
             <h1>📄 PDF Search Engine</h1>
-            <p>Search for text across all PDF files in a folder</p>
+            <p>Search for text across PDF files - Choose your method below</p>
         </div>
 
         <div class="content">
-            <div class="info-box">
-                <strong>How to use:</strong>
-                Enter the full path to a folder on your local machine (e.g., C:\Documents\MyPDFs) and the text you want to search for. The application will scan all PDF files in that folder and its subfolders.
-            </div>
-
-            <form id="searchForm" class="search-form">
-                <div class="form-group">
-                    <label for="folderPath">Folder Path:</label>
-                    <input 
-                        type="text" 
-                        id="folderPath" 
-                        name="folderPath" 
-                        placeholder="e.g., C:\Users\YourName\Documents\PDFs"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="searchText">Search Text:</label>
-                    <input 
-                        type="text" 
-                        id="searchText" 
-                        name="searchText" 
-                        placeholder="Enter text to search for..."
-                        required
-                    >
-                </div>
-
-                <button type="submit" class="search-btn" id="searchBtn">
-                    🔍 Search all PDF Files
+            <!-- Mode Selector -->
+            <div class="mode-selector">
+                <button class="mode-btn" onclick="switchMode('local')" id="localModeBtn">
+                    📁 Local Folder Search
                 </button>
-            </form>
-
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Searching PDF files... This may take a moment.</p>
+                <button class="mode-btn active" onclick="switchMode('upload')" id="uploadModeBtn">
+                    📤 Upload PDF Files
+                </button>
             </div>
 
-            <div id="resultsContainer"></div>
+            <!-- Local Folder Mode -->
+            <div id="localMode" class="mode-section">
+                <div class="search-form">
+                    <div class="form-group">
+                        <label for="folderPath">📁 Folder Path:</label>
+                        <input type="text" id="folderPath" placeholder="e.g., C:\Users\YourName\Documents\PDFs" />
+                    </div>
+                    <div class="form-group">
+                        <label for="searchText">🔍 Search Text:</label>
+                        <input type="text" id="searchText" placeholder="Enter text to search..." />
+                    </div>
+                    <button class="search-btn" id="searchLocalBtn" onclick="searchLocal()">Search in Folder</button>
+                </div>
+            </div>
+
+            <!-- Upload Mode -->
+            <div id="uploadMode" class="mode-section active">
+                <div class="search-form">
+                    <!-- File Upload Section -->
+                    <div class="form-group">
+                        <label for="pdfFiles">📤 Upload PDF Files (Max 1000):</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="file" id="pdfFiles" multiple accept=".pdf" style="flex: 1;" />
+                            <button type="button" class="icon-btn" onclick="addMoreFiles()" title="Add selected files to list" style="padding: 12px 15px; font-size: 1.2em; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; transition: all 0.3s;">➕</button>
+                        </div>
+                        <div class="file-info" id="fileInfo"></div>
+                    </div>
+
+                    <!-- Uploaded Files List - Scrollable -->
+                    <div id="uploadedFilesList" style="display: none; margin-top: 20px;">
+                        <div class="uploaded-files-header">
+                            <h3 style="margin: 0; font-size: 1em;">📋 Uploaded Files</h3>
+                            <button type="button" class="clear-btn" onclick="clearUploadedFiles()">Clear All</button>
+                        </div>
+                        <div id="fileListContainer" class="file-list-container" style="max-height: 200px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; background: #f9f9f9;"></div>
+                        <div class="file-info" id="fileCountInfo" style="margin-top: 10px; font-size: 0.9em; color: #666;"></div>
+                    </div>
+
+                    <!-- Search Section -->
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="searchTextUpload">🔍 Search Text:</label>
+                        <input type="text" id="searchTextUpload" placeholder="Enter text to search..." />
+                    </div>
+                    <button class="search-btn" id="searchUploadBtn" onclick="searchUploaded()" style="width: 100%;">Search Uploaded Files</button>
+                </div>
+            </div>
+
+            <!-- Progress Container -->
+            <div id="progressContainer" class="progress-container">
+                <div class="progress-message">
+                    <span class="progress-spinner"></span>
+                    <span id="progressText">Searching files...</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                    <div id="progressBar" class="progress-bar indeterminate"></div>
+                </div>
+                <div class="progress-stats">
+                    <span id="progressStats">Processing...</span>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div id="resultsContainer" class="results-container"></div>
         </div>
     </div>
 
     <script>
-        const searchForm = document.getElementById('searchForm');
-        const searchBtn = document.getElementById('searchBtn');
-        const loading = document.getElementById('loading');
-        const resultsContainer = document.getElementById('resultsContainer');
+        let currentSessionId = null;
+        let uploadedFilesArray = [];
 
-        searchForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        function switchMode(mode) {
+            // Update buttons
+            document.getElementById('localModeBtn').classList.toggle('active', mode === 'local');
+            document.getElementById('uploadModeBtn').classList.toggle('active', mode === 'upload');
 
+            // Update sections
+            document.getElementById('localMode').classList.toggle('active', mode === 'local');
+            document.getElementById('uploadMode').classList.toggle('active', mode === 'upload');
+
+            // Clear results
+            document.getElementById('resultsContainer').innerHTML = '';
+        }
+
+        // File upload handler
+        document.getElementById('pdfFiles').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const fileInfo = document.getElementById('fileInfo');
+
+            if (files.length === 0) {
+                fileInfo.innerHTML = '';
+                return;
+            }
+
+            // Check if adding these files would exceed limit
+            const totalFiles = uploadedFilesArray.length + files.length;
+            if (totalFiles > 1000) {
+                fileInfo.innerHTML = `<span style="color: red;">❌ Cannot add ${files.length} files. Total would be ${totalFiles} (Max 1000)</span>`;
+                e.target.value = '';
+                return;
+            }
+
+            if (files.length > 0) {
+                let totalSize = 0;
+                for (let file of files) {
+                    totalSize += file.size;
+                }
+                const sizeMB = (totalSize / (1024 * 1024)).toFixed(2);
+                fileInfo.innerHTML = `✅ ${files.length} file(s) selected (${sizeMB} MB) - Click "Add More Files" to add them`;
+            }
+        });
+
+        function addMoreFiles() {
+            const files = document.getElementById('pdfFiles').files;
+            const fileInfo = document.getElementById('fileInfo');
+
+            if (files.length === 0) {
+                showError('Please select PDF files first');
+                return;
+            }
+
+            // Add files to the array
+            for (let file of files) {
+                uploadedFilesArray.push({
+                    name: file.name,
+                    size: file.size,
+                    file: file
+                });
+            }
+
+            // Update display
+            updateFileListDisplay();
+
+            // Clear the input
+            document.getElementById('pdfFiles').value = '';
+            fileInfo.innerHTML = '';
+        }
+
+        function updateFileListDisplay() {
+            const listContainer = document.getElementById('uploadedFilesList');
+            const fileListContainer = document.getElementById('fileListContainer');
+
+            if (uploadedFilesArray.length === 0) {
+                listContainer.style.display = 'none';
+                return;
+            }
+
+            listContainer.style.display = 'block';
+
+            let html = '';
+            let totalSize = 0;
+
+            uploadedFilesArray.forEach((fileObj, index) => {
+                const sizeMB = (fileObj.size / (1024 * 1024)).toFixed(2);
+                totalSize += fileObj.size;
+                html += `
+                    <div class="file-item">
+                        <div class="file-item-name">📄 ${fileObj.name}</div>
+                        <div class="file-item-size">${sizeMB} MB</div>
+                        <button type="button" class="remove-file-btn" onclick="removeFile(${index})" title="Remove file">✕</button>
+                    </div>
+                `;
+            });
+
+            fileListContainer.innerHTML = html;
+
+            // Update file count info
+            const totalSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
+            const fileCountInfo = document.getElementById('fileCountInfo');
+            fileCountInfo.innerHTML = `📦 ${uploadedFilesArray.length} file(s) ready to search (${totalSizeMB} MB total)`;
+        }
+
+        function removeFile(index) {
+            uploadedFilesArray.splice(index, 1);
+            updateFileListDisplay();
+        }
+
+        function clearUploadedFiles() {
+            if (confirm('Are you sure you want to clear all uploaded files?')) {
+                uploadedFilesArray = [];
+                updateFileListDisplay();
+                document.getElementById('fileInfo').innerHTML = '';
+                document.getElementById('resultsContainer').innerHTML = '';
+            }
+        }
+
+        async function searchLocal() {
             const folderPath = document.getElementById('folderPath').value.trim();
             const searchText = document.getElementById('searchText').value.trim();
 
             if (!folderPath || !searchText) {
-                alert('Please fill in both fields');
+                showError('Please enter both folder path and search text');
                 return;
             }
 
-            // Show loading, hide results
-            loading.classList.add('active');
-            resultsContainer.innerHTML = '';
-            searchBtn.disabled = true;
+            showProgress('Scanning folder for PDF files...');
 
             try {
                 const response = await fetch('/api/search', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        folderPath: folderPath,
-                        searchText: searchText
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ folderPath, searchText })
                 });
 
                 const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(data.error || 'Search failed');
+                    hideProgress();
+                    showError(data.error || 'Search failed');
+                    return;
                 }
 
+                hideProgress();
                 displayResults(data);
-
             } catch (error) {
-                resultsContainer.innerHTML = `
-                    <div class="error">
-                        <strong>Error:</strong> ${error.message}
-                    </div>
-                `;
-            } finally {
-                loading.classList.remove('active');
-                searchBtn.disabled = false;
+                hideProgress();
+                showError('Error: ' + error.message);
             }
-        });
+        }
 
-        function displayResults(data) {
-            if (!data.success) {
-                resultsContainer.innerHTML = `
-                    <div class="error">
-                        <strong>Error:</strong> ${data.error}
-                    </div>
-                `;
+        async function searchUploaded() {
+            const searchText = document.getElementById('searchTextUpload').value.trim();
+
+            if (uploadedFilesArray.length === 0) {
+                showError('Please add PDF files first using "Add More Files" button');
                 return;
             }
 
-            let html = `
-                <div class="results">
-                    <div class="results-header">
-                        <h2>Search Results</h2>
-                        <div class="results-stats">
-                            Found <strong>${data.matchingPdfs}</strong> matching PDF(s) out of <strong>${data.totalPdfs}</strong> total PDF files
-                        </div>
-                    </div>
+            if (!searchText) {
+                showError('Please enter search text');
+                return;
+            }
+
+            showProgress(`Uploading ${uploadedFilesArray.length} file(s)...`);
+
+            try {
+                // Upload all accumulated files
+                const formData = new FormData();
+                uploadedFilesArray.forEach(fileObj => {
+                    formData.append('files', fileObj.file);
+                });
+
+                const uploadResponse = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const uploadData = await uploadResponse.json();
+
+                if (!uploadResponse.ok) {
+                    hideProgress();
+                    showError(uploadData.error || 'Upload failed');
+                    return;
+                }
+
+                currentSessionId = uploadData.sessionId;
+
+                // Update progress message
+                updateProgress('Searching files for: "' + searchText + '"...', 50);
+
+                // Search in uploaded files
+                const searchResponse = await fetch('/api/search-uploaded', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId: currentSessionId, searchText })
+                });
+
+                const searchData = await searchResponse.json();
+
+                if (!searchResponse.ok) {
+                    hideProgress();
+                    showError(searchData.error || 'Search failed');
+                    return;
+                }
+
+                hideProgress();
+                displayResults(searchData);
+            } catch (error) {
+                hideProgress();
+                showError('Error: ' + error.message);
+            }
+        }
+
+        function displayResults(data) {
+            const container = document.getElementById('resultsContainer');
+            let html = '';
+
+            html += `
+                <div class="results-header">
+                    🔍 Search Results for "${data.searchText}"
+                    <br>
+                    Found ${data.matchingPdfs} matching file(s) out of ${data.totalPdfs} total
+                </div>
             `;
 
             if (data.results.length === 0) {
-                html += `
-                    <div class="no-results">
-                        <p>😔 No PDFs found containing "${data.searchText}"</p>
-                    </div>
-                `;
+                html += '<div class="no-results">😔 No PDFs found containing "${data.searchText}"</div>';
             } else {
-                data.results.forEach((result, index) => {
+                data.results.forEach((result) => {
                     html += `
                         <div class="result-item">
                             <div class="result-filename">📄 ${result.fileName}</div>
-                            <div class="result-path">
-                                <div class="path-content">
-                                    <strong>Path:</strong> <span class="file-path-text"></span>
+                            ${result.filePath ? `
+                                <div class="result-path">
+                                    <div class="path-content">
+                                        <strong>Path:</strong> <span class="file-path-text"></span>
+                                    </div>
+                                    <button class="copy-btn" data-path="${result.filePath}" onclick="copyToClipboard(this.getAttribute('data-path'), this)" title="Copy path to clipboard">
+                                        📋
+                                    </button>
                                 </div>
-                                <button class="copy-btn" data-path="${result.filePath}" onclick="copyToClipboard(this.getAttribute('data-path'), this)" title="Copy path to clipboard">
-                                    📋
-                                </button>
-                            </div>
+                            ` : ''}
                         </div>
                     `;
                 });
             }
 
-            html += '</div>';
-            resultsContainer.innerHTML = html;
+            container.innerHTML = html;
 
-            // Set file paths using textContent to preserve all characters
-            const pathSpans = resultsContainer.querySelectorAll('.file-path-text');
+            // Set file paths using textContent
+            const pathSpans = container.querySelectorAll('.file-path-text');
             data.results.forEach((result, index) => {
-                if (pathSpans[index]) {
+                if (pathSpans[index] && result.filePath) {
                     pathSpans[index].textContent = result.filePath;
                 }
             });
+        }
+
+        function showLoading() {
+            document.getElementById('resultsContainer').innerHTML = '<div class="loading"><span class="spinner"></span>Searching...</div>';
+        }
+
+        function showError(message) {
+            document.getElementById('resultsContainer').innerHTML = `<div class="error-message">❌ ${message}</div>`;
+        }
+
+        function showProgress(message) {
+            const progressContainer = document.getElementById('progressContainer');
+            const progressText = document.getElementById('progressText');
+            const progressBar = document.getElementById('progressBar');
+            const progressStats = document.getElementById('progressStats');
+
+            progressText.textContent = message;
+            progressBar.classList.add('indeterminate');
+            progressStats.textContent = 'Processing...';
+            progressContainer.classList.add('active');
+            document.getElementById('resultsContainer').innerHTML = '';
+
+            // Disable both search buttons
+            document.getElementById('searchLocalBtn').disabled = true;
+            document.getElementById('searchUploadBtn').disabled = true;
+        }
+
+        function updateProgress(message, percentage) {
+            const progressText = document.getElementById('progressText');
+            const progressBar = document.getElementById('progressBar');
+            const progressStats = document.getElementById('progressStats');
+
+            progressText.textContent = message;
+            progressBar.classList.remove('indeterminate');
+            progressBar.style.width = percentage + '%';
+            progressStats.textContent = percentage + '% complete';
+        }
+
+        function hideProgress() {
+            const progressContainer = document.getElementById('progressContainer');
+            progressContainer.classList.remove('active');
+
+            // Re-enable both search buttons
+            document.getElementById('searchLocalBtn').disabled = false;
+            document.getElementById('searchUploadBtn').disabled = false;
         }
 
         function copyToClipboard(text, button) {
