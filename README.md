@@ -20,7 +20,7 @@ A simple web application to search for text across multiple PDF files in local f
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/YOUR_USERNAME/pdf-search-engine.git
+git clone https://github.com/shenulal/PDF-Search-Engine.git
 cd pdf-search-engine
 ```
 
