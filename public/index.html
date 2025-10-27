@@ -445,6 +445,43 @@
             width: 100%;
         }
 
+        .result-matches {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .result-matches strong {
+            color: #555;
+            font-size: 0.95em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .matches-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .match-item {
+            background: #fff9e6;
+            border-left: 3px solid #ffc107;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .match-text {
+            font-family: 'Courier New', monospace;
+            color: #555;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
         .copy-btn {
             background: none;
             border: none;
@@ -850,6 +887,18 @@
                     html += `
                         <div class="result-item">
                             <div class="result-filename">📄 ${result.fileName}</div>
+                            ${result.matches && result.matches.length > 0 ? `
+                                <div class="result-matches">
+                                    <strong>📍 Found in:</strong>
+                                    <ul class="matches-list">
+                                        ${result.matches.map(match => `
+                                            <li class="match-item">
+                                                <span class="match-text">${escapeHtml(match)}</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
                             ${result.filePath ? `
                                 <div class="result-path">
                                     <div class="path-content">
@@ -878,6 +927,17 @@
 
         function showLoading() {
             document.getElementById('resultsContainer').innerHTML = '<div class="loading"><span class="spinner"></span>Searching...</div>';
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
         }
 
         function showError(message) {

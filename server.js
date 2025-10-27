@@ -76,26 +76,47 @@ async function getAllPdfFiles(dirPath) {
 }
 
 /**
- * Search for text in a PDF file
+ * Search for text in a PDF file and extract matching portions
  */
 async function searchInPdf(pdfPath, searchText) {
     return new Promise((resolve) => {
         extract(pdfPath, (err, pages) => {
             if (err) {
                 console.error(`Error parsing PDF ${pdfPath}:`, err.message);
-                resolve(false);
+                resolve({ found: false, matches: [] });
                 return;
             }
 
             try {
                 // Combine all pages into one text
-                const fullText = pages.join(' ').toLowerCase();
+                const fullText = pages.join(' ');
                 const search = searchText.toLowerCase();
+                const found = fullText.toLowerCase().includes(search);
 
-                resolve(fullText.includes(search));
+                if (!found) {
+                    resolve({ found: false, matches: [] });
+                    return;
+                }
+
+                // Extract matching portions (context around the search text)
+                const matches = [];
+                const regex = new RegExp(`.{0,50}${searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.{0,50}`, 'gi');
+                let match;
+
+                while ((match = regex.exec(fullText)) !== null) {
+                    const portion = match[0].trim();
+                    // Avoid duplicate matches
+                    if (!matches.includes(portion)) {
+                        matches.push(portion);
+                    }
+                    // Limit to 5 matches per file
+                    if (matches.length >= 5) break;
+                }
+
+                resolve({ found: true, matches });
             } catch (error) {
                 console.error(`Error searching PDF ${pdfPath}:`, error.message);
-                resolve(false);
+                resolve({ found: false, matches: [] });
             }
         });
     });
@@ -164,11 +185,12 @@ app.post('/api/search-uploaded', async (req, res) => {
 
         for (let index = 0; index < totalFiles; index++) {
             const fileInfo = files[index];
-            const found = await searchInPdf(fileInfo.storagePath, searchText);
-            if (found) {
+            const searchResult = await searchInPdf(fileInfo.storagePath, searchText);
+            if (searchResult.found) {
                 results.push({
                     fileName: fileInfo.originalName,
-                    fileSize: fileInfo.size
+                    fileSize: fileInfo.size,
+                    matches: searchResult.matches
                 });
             }
         }
@@ -233,18 +255,19 @@ app.post('/api/search', async (req, res) => {
         // Search in each PDF
         const results = [];
         let processedCount = 0;
-        
+
         for (const pdfPath of pdfFiles) {
             processedCount++;
             console.log(`Processing ${processedCount}/${pdfFiles.length}: ${path.basename(pdfPath)}`);
-            
-            const found = await searchInPdf(pdfPath, searchText);
-            
-            if (found) {
+
+            const searchResult = await searchInPdf(pdfPath, searchText);
+
+            if (searchResult.found) {
                 results.push({
                     fileName: path.basename(pdfPath),
                     filePath: pdfPath.replace(/\\/g, '/'),
-                    relativePath: path.relative(folderPath, pdfPath).replace(/\\/g, '/')
+                    relativePath: path.relative(folderPath, pdfPath).replace(/\\/g, '/'),
+                    matches: searchResult.matches
                 });
             }
         }
