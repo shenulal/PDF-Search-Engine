@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Search Engine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .search-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .search-btn:active {
+            transform: translateY(0);
+        }
+
+        .search-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results {
+            margin-top: 30px;
+        }
+
+        .results-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .results-header h2 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .results-stats {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .result-item {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-filename {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .result-path {
+            color: #666;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        .path-content {
+            flex: 1;
+        }
+
+        .file-path-text {
+            font-family: 'Courier New', monospace;
+            color: #555;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            white-space: normal;
+            display: block;
+            width: 100%;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            padding: 5px 8px;
+            transition: transform 0.2s, opacity 0.2s;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .copy-btn:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .copy-btn.copied {
+            opacity: 1;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1em;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            margin-top: 20px;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #17a2b8;
+            margin-bottom: 20px;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 PDF Search Engine</h1>
+            <p>Search for text across all PDF files in a folder</p>
+        </div>
+
+        <div class="content">
+            <div class="info-box">
+                <strong>How to use:</strong>
+                Enter the full path to a folder on your local machine (e.g., C:\Documents\MyPDFs) and the text you want to search for. The application will scan all PDF files in that folder and its subfolders.
+            </div>
+
+            <form id="searchForm" class="search-form">
+                <div class="form-group">
+                    <label for="folderPath">Folder Path:</label>
+                    <input 
+                        type="text" 
+                        id="folderPath" 
+                        name="folderPath" 
+                        placeholder="e.g., C:\Users\YourName\Documents\PDFs"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="searchText">Search Text:</label>
+                    <input 
+                        type="text" 
+                        id="searchText" 
+                        name="searchText" 
+                        placeholder="Enter text to search for..."
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="search-btn" id="searchBtn">
+                    🔍 Search all PDF Files
+                </button>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Searching PDF files... This may take a moment.</p>
+            </div>
+
+            <div id="resultsContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const searchBtn = document.getElementById('searchBtn');
+        const loading = document.getElementById('loading');
+        const resultsContainer = document.getElementById('resultsContainer');
+
+        searchForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const folderPath = document.getElementById('folderPath').value.trim();
+            const searchText = document.getElementById('searchText').value.trim();
+
+            if (!folderPath || !searchText) {
+                alert('Please fill in both fields');
+                return;
+            }
+
+            // Show loading, hide results
+            loading.classList.add('active');
+            resultsContainer.innerHTML = '';
+            searchBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        folderPath: folderPath,
+                        searchText: searchText
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Search failed');
+                }
+
+                displayResults(data);
+
+            } catch (error) {
+                resultsContainer.innerHTML = `
+                    <div class="error">
+                        <strong>Error:</strong> ${error.message}
+                    </div>
+                `;
+            } finally {
+                loading.classList.remove('active');
+                searchBtn.disabled = false;
+            }
+        });
+
+        function displayResults(data) {
+            if (!data.success) {
+                resultsContainer.innerHTML = `
+                    <div class="error">
+                        <strong>Error:</strong> ${data.error}
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="results">
+                    <div class="results-header">
+                        <h2>Search Results</h2>
+                        <div class="results-stats">
+                            Found <strong>${data.matchingPdfs}</strong> matching PDF(s) out of <strong>${data.totalPdfs}</strong> total PDF files
+                        </div>
+                    </div>
+            `;
+
+            if (data.results.length === 0) {
+                html += `
+                    <div class="no-results">
+                        <p>😔 No PDFs found containing "${data.searchText}"</p>
+                    </div>
+                `;
+            } else {
+                data.results.forEach((result, index) => {
+                    html += `
+                        <div class="result-item">
+                            <div class="result-filename">📄 ${result.fileName}</div>
+                            <div class="result-path">
+                                <div class="path-content">
+                                    <strong>Path:</strong> <span class="file-path-text"></span>
+                                </div>
+                                <button class="copy-btn" data-path="${result.filePath}" onclick="copyToClipboard(this.getAttribute('data-path'), this)" title="Copy path to clipboard">
+                                    📋
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            html += '</div>';
+            resultsContainer.innerHTML = html;
+
+            // Set file paths using textContent to preserve all characters
+            const pathSpans = resultsContainer.querySelectorAll('.file-path-text');
+            data.results.forEach((result, index) => {
+                if (pathSpans[index]) {
+                    pathSpans[index].textContent = result.filePath;
+                }
+            });
+        }
+
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Change button appearance
+                const originalIcon = button.textContent;
+                button.textContent = '✅';
+                button.classList.add('copied');
+                button.title = 'Copied!';
+
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    button.textContent = originalIcon;
+                    button.classList.remove('copied');
+                    button.title = 'Copy path to clipboard';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                alert('Failed to copy path');
+            });
+        }
+    </script>
+</body>
+</html>
+
